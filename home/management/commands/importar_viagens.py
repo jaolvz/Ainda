@@ -23,8 +23,7 @@ class Command (BaseCommand):
                 service =row['service_id'],
                 destino_letreiro=row['trip_headsign'],
                 rota_numero=row['trip_short_name'],
-
-
+                destino_id = row['direction_id'],
             )
 
         self.stdout.write(self.style.SUCCESS('viagens importadas com sucesso'))

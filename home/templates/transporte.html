@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/transporte.css'%}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'logo.png' %}">
+    <title>Coé - Pagina Inicial</title>
+</head>
+<body>
+    <header>
+        <img src="{% static 'logo.png' %}" alt=""><h1>Coé</h1>
+    </header>
+
+    <main>
+
+
+<section >
+    
+ <a href="{% url 'home:transporte_onibus' %}"> <img src="{% static 'onibus.png' %}" alt="Ônibus"></a>
+ <img src="{% static 'metro.png' %}" alt="Metro">
+ <img src="{% static 'trem.png' %}" alt="Trem">
+
+</section>
+</body>
+</html>

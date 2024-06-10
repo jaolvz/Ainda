@@ -20,6 +20,7 @@ class Command(BaseCommand):
                 instance = Horario_Inicio(
                     viagem_id=row['trip_id'],
                     horario=row['start_time'],
+                    tempo_intervalo = row['headway_secs']
                 )
                 bulk_instances.append(instance)
 

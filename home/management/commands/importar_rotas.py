@@ -20,7 +20,8 @@ class Command (BaseCommand):
             LinhaDeOnibus.objects.create(
                 rota_id=row['route_id'],
                 rota_numero=row['route_short_name'],
-                rota_nome=row.get('route_long_name', '')
+                rota_nome=row.get('route_long_name', ''),
+                
             )
 
         self.stdout.write(self.style.SUCCESS('rotas importadas com sucesso'))

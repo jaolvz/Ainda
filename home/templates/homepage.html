@@ -4,22 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'home.css'%}">
-    <title>VDNP</title>
+    <link rel="stylesheet" href="{% static 'css/homepage.css'%}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'logo.png' %}">
+    
+    <title>Coé - Pagina Inicial</title>
 </head>
 <body>
     <header>
-        <h1>Vai descer no próximo</h1>
+         <img src="{% static 'logo.png' %}" alt=""><h1>Coé</h1>
     </header>
 
-    <form action="{% url 'home:onibus_especifico'%}"  method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-    <select name="onibus_selecionado" id="">
-        {%for linha in linhas%}
-        <option value="{{linha.rota_numero}}">{{linha.rota_numero}} </option>
-        {%endfor%}
-    </select>
-    <input type="submit">
-    </form>
+    <main>
+
+
+
+
+        <section class="btns">
+            <div class="btn_transporte"> <a href="{% url 'home:transporte'%}"><h1>Transporte</h1> </a></div>
+            <div class="btn_noticias"> <a href=""> <h1>Noticias</h1></a></div>
+            <div class="btn_noticias"> <a href=""> <h1>Lazer</h1></a></div>
+            <div class="btn_noticias"> <a href=""> <h1>Shoppings</h1></a></div>
+        </section>
+
+
+
+    </main>
+
 </body>
 </html>

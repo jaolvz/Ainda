@@ -1,0 +1,26 @@
+@import url(basico.css);
+
+body{
+    width: 100vw;
+    height: 100vh;
+}
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 80vh;
+}
+section{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 70%;
+
+}
+
+section img{
+    width: 100px;
+    height: 100px;
+
+}

@@ -7,6 +7,7 @@ class LinhaDeOnibus(models.Model):
     rota_nome = models.TextField(null=False)
 
 
+
 class Disponibilidade(models.Model):
     service_id = models.CharField(max_length=10, unique=True, primary_key=True)
     segunda = models.BooleanField(default=False)
@@ -24,10 +25,12 @@ class Viagem(models.Model):
     service = models.CharField(max_length=10)
     destino_letreiro = models.TextField()
     rota_numero = models.CharField(max_length=10)
+    destino_id = models.IntegerField(default=0)
 
 class Horario_Inicio(models.Model):
     viagem_id = models.CharField(max_length=36, unique=True, primary_key=True)
     horario = models.TimeField()
+    tempo_intervalo = models.IntegerField( default=0)
 
 
 

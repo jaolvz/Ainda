@@ -1,0 +1,32 @@
+*{box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    }
+body
+{
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+
+    a{
+        color: inherit;
+        text-decoration: none;
+    }
+    @font-face {
+        font-family: fonteLogo;
+        src: url(../fonts/TangoSans.ttf)  format("truetype") ;
+    }
+    header{
+        position: relative;
+        height: 15vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: fonteLogo;
+        border-bottom: 0.5px solid black;
+    }
+    header img{
+        width: 100px;
+        height: 100px;
+    }

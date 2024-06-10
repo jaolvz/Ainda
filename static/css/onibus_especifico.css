@@ -1,0 +1,54 @@
+@import url(basico.css);
+
+main{
+    width: 100%;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: fonteLogo;
+}
+main h1{
+    font-family: fonteLogo;
+}
+
+.cabecalho_linha{
+    width: 100%;
+    box-shadow:0px 5px 5px 2px rgb(212, 212, 212);
+    padding: 50px;
+    
+}
+.cabecalho_linha div{
+    display: flex;
+    align-items: center;
+}
+.cabecalho_linha div img{
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+}
+.cabecalho_linha h1{
+    font-size: 70px;
+}
+
+.cabecalho_linha p{
+    font-size: 30px;
+}
+.logo_brt{
+    border-radius: 50%;
+}
+.cabecalho_linha h3, .cabecalho_linha p , .cabecalho_linha h1 {
+    margin-top: 15px    ;
+    
+}
+
+.btn_voltar{
+    position: absolute;
+    left:5px ;
+}
+
+.descricao_linha{
+    margin-top: 20px;
+    padding: 50px;
+
+}

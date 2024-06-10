@@ -4,30 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'home.css'%}">
-    <title>VDNP</title>
+    <link rel="stylesheet" href="{% static 'css/onibus_especifico.css'%}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'logo.png' %}">
+    <title>Coé - Linha {{linha.rota_numero}}</title>
 </head>
 <body>
     <header>
-        <h1>Vai descer no próximo</h1>
+        <a class="btn_voltar" href="{% url 'home:transporte_onibus' %}"><h1>back</h1></a>
+        <img src="{% static 'logo.png' %}" alt=""><h1>Coé</h1>
     </header>
+    <main>
+        <section class="cabecalho_linha">
+
+          <div>  <h1 > Linha {{linha.rota_numero}} </h1>  <img src="{% static 'onibus.png' %}" alt="">
+           {% if condicao == 1 %}
+          <img class='logo_brt' src="{% static 'logo_brt.png' %}">
+           {% elif condicao == 2 %} 
+           <img src="{% static 'frescao.png' %}">
+            {% endif %}</div> 
+            <p>{{linha.rota_nome}}</p>
+            <h3>Frequência: {{media_tempo}} minutos. </h3>
+        </section>
+        
+        <section class="descricao_linha">
+            <p>
+                A linha de ônibus {{linha.rota_numero}} possui {{parada_info.total_paradas}} pontos partindo de {{parada_info.primeira_parada}} e terminando em {{parada_info.ultima_parada}}
+            </p>
+
+               <div class="paradas">
+                {%for parada in paradas_nome%}
+                 > {{parada}} 
+                {%endfor%}
+               </div> 
 
 
-  
+        </section>
 
-{% for viagem in viagens %}
-    {% if linha.rota_numero == viagem.rota_numero %}
-    <div class="viagem">
-<p> Viagem : {{viagem.viagem_id}}
-    <br>Serviço: {{viagem.service}}
-    <br>Sentido : {{viagem.destino_letreiro}}
-    <br>Rota: {{viagem.rota}}
-    <br>Saida por volta de : {{viagem.horario}}
-
-    </div>
-    <br>
-    <br>
-
-    {%endif%}
-{% endfor %}
+    </main>
 </html>

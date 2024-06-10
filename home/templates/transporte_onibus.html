@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/transporte_onibus.css'%}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'logo.png' %}">
+    <title>Coé - Linhas de Onibus </title>
+
+</head>
+<body>
+    <header>
+        <img src="{% static 'logo.png' %}" alt=""><h1>Coé</h1>
+    </header>
+    <main>
+        <h1>Linhas municipais</h1>
+
+            <input type="text" id="filtro" name="linha_procurada" onkeyup="filtrarLinhas()" >
+
+        
+
+
+    <ul id="linhas" class="linhas">
+    {% for linha in linhas%}
+    <a href="{% url 'home:onibus_especifico' linha.rota_numero  %}">
+
+    <li class="linha" id="{{linha.rota_numero}}">
+        <img src="{% static 'onibus.png' %}" alt="">
+        <h2> {{linha.rota_numero}} -  {{linha.rota_nome}} </h2>
+ {%if linha.rota_numero in linhas_brt %}<img class="brt_img" alt="BRT" src="{% static 'logo_brt.png' %}"> {%elif linha.rota_numero in linhas_frescao%} <img class="brt_img" src="{% static 'frescao.png' %}" alt="Frescão"> {%endif%}
+    </li>
+</a>
+    {% endfor %}
+
+</ul>
+
+    </main>
+</body>
+
+
+<script>
+    function filtrarLinhas() {
+      var filtro = document.getElementById('filtro').value.toUpperCase();
+      var linhas = document.querySelectorAll('.linha'); // pegas as linhas
+    
+      for (var i = 0; i < linhas.length; i++) {
+        var linha = linhas[i];
+        var textoLinha = linha.textContent || linha.innerText;
+        if (textoLinha.toUpperCase().indexOf(filtro) > -1) {
+          linha.style.display = ''; 
+        } else {
+          linha.style.display = 'none'; 
+        }
+      }
+    }
+    </script>
+</html>
