@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'home.css'%}">
+    <title>VDNP</title>
+</head>
+<body>
+    <header>
+        <h1>Vai descer no próximo</h1>
+    </header>
+
+
+  
+
+{% for viagem in viagens %}
+    {% if linha.rota_numero == viagem.rota_numero %}
+    <div class="viagem">
+<p> Viagem : {{viagem.viagem_id}}
+    <br>Serviço: {{viagem.service}}
+    <br>Sentido : {{viagem.destino_letreiro}}
+    <br>Rota: {{viagem.rota}}
+    <br>Saida por volta de : {{viagem.horario}}
+
+    </div>
+    <br>
+    <br>
+
+    {%endif%}
+{% endfor %}
+</html>
