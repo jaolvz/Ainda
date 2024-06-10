@@ -32,8 +32,11 @@
             </p>
 
                <div class="paradas">
+                <h3>Sentido: {{parada_info.ultima_parada}}</h3>
                 {%for parada in paradas_nome%}
-                 > {{parada}} 
+                  <div class="parada">
+                    {{parada}} 
+                  </div>
                 {%endfor%}
                </div> 
 
