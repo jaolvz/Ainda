@@ -1,7 +1,5 @@
 from django.shortcuts import render
 from django.db.models import Q, Max
-import osmnx as ox
-import networkx as nx
 import folium
 import datetime 
 from .models import LinhaDeOnibus,Viagem,Horario_Inicio, HorarioParada,Parada
