@@ -1,6 +1,8 @@
-from django.shortcuts import render, redirect,get_object_or_404
-from django.http import HttpResponse
+from django.shortcuts import render
 from django.db.models import Q, Max
+import osmnx as ox
+import networkx as nx
+import folium
 import datetime 
 from .models import LinhaDeOnibus,Viagem,Horario_Inicio, HorarioParada,Parada
 
@@ -88,22 +90,47 @@ def onibus_especifico(request,rota_numero): #condicao sppo =0, brt=1, frescao= 2
       id_viagem_destino0  = Viagem.objects.filter(viagem_id__in=viagens_id,destino_id=0).first().viagem_id
       paradas = HorarioParada.objects.filter(viagem_id=id_viagem_destino0)
       paradas_nome =[]
+      cordenadas_das_paradas=[]
+
       for i in paradas:
          nome_parada = Parada.objects.filter(parada_id=i.parada).first().referencia_parada   
          paradas_nome.append(nome_parada)
+         longitude = Parada.objects.filter(parada_id=i.parada).first().parada_longitude
+         latitude = Parada.objects.filter(parada_id=i.parada).first().parada_latitude
+         cordenadas_da_parada = (latitude,longitude)
+         cordenadas_das_paradas.append(cordenadas_da_parada)
 
-
+      origem =cordenadas_das_paradas[0]  # Exemplo de coordenadas da origem
+      destino = cordenadas_das_paradas[-1] # Exemplo de coordenadas do destino
+     
+      mapa = folium.Map(location=origem, zoom_start=15)
       
+     
+      for ponto in cordenadas_das_paradas:
+         latitude,longitude =ponto  
+         folium.Marker(location=[latitude, longitude]).add_to(mapa)
+         
+      folium.Marker(location=cordenadas_das_paradas[0], popup='Localização Inicial', tooltip='Localização Inicial').add_to(mapa)
+      folium.Marker(location=cordenadas_das_paradas[-1], popup='Localização Final', tooltip='Localização Final').add_to(mapa)
+      coordenadas_linha = [(latitude, longitude) for latitude, longitude in cordenadas_das_paradas]
+
+      folium.PolyLine(locations=coordenadas_linha, color='blue').add_to(mapa)
+
+      map_html = mapa._repr_html_()   
+
+
+
 
 
       #verificando se é SPPO, BRT ou FRESCÃO
       condicao = verificar_linha(linha.rota_numero)
 
-      contexto = {'viagens': viagens_com_horario, 'linha':linha, 'media_tempo': round(tempo_de_espera_media), 'condicao': condicao ,'parada_info':parada_info,'paradas':paradas,'paradas_nome':paradas_nome }
+      contexto = {'viagens': viagens_com_horario, 'linha':linha,'map_html': map_html,'media_tempo': round(tempo_de_espera_media), 'condicao': condicao , 'parada_info':parada_info,'paradas':paradas,'paradas_nome':paradas_nome }
    
       return render(request, 'onibus_especifico.html',contexto)
 
 def transporte_onibus (request):
+
    linhas = LinhaDeOnibus.objects.all().order_by('rota_numero')
    linhas_brt, linhas_frescao = listas_brt_frescao()
 

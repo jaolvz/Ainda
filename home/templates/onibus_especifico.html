@@ -26,22 +26,28 @@
             <h3>Frequência: {{media_tempo}} minutos. </h3>
         </section>
         
+        <div class="rota_mapa" >
         <section class="descricao_linha">
             <p>
                 A linha de ônibus {{linha.rota_numero}} possui {{parada_info.total_paradas}} pontos partindo de {{parada_info.primeira_parada}} e terminando em {{parada_info.ultima_parada}}
             </p>
 
                <div class="paradas">
-                <h3>Sentido: {{parada_info.ultima_parada}}</h3>
+                <h3 class="titulo_paradas">Sentido: {{parada_info.ultima_parada}}</h3>
                 {%for parada in paradas_nome%}
                   <div class="parada">
                     {{parada}} 
                   </div>
                 {%endfor%}
                </div> 
-
-
         </section>
 
+        <section class="mapa">
+            
+                <h1>Rota do {{linha.rota_numero}} sentido {{parada_info.ultima_parada}}</h1>
+            <div id="map">{{ map_html|safe }}</div>
+        </section>
+
+    </div>
     </main>
 </html>
