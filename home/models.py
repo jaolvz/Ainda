@@ -40,6 +40,11 @@ class Parada(models.Model):
     referencia_parada = models.TextField()
     parada_latitude = models.FloatField()
     parada_longitude = models.FloatField()
+    integracao_trem = models.BooleanField(default=False)
+    estacao_trem = models.CharField(max_length=255, blank=True, null=True)
+    integracao_metro = models.BooleanField(default=False)
+    estacao_metro = models.CharField(max_length=255, blank=True, null=True)
+
 
 
 class HorarioParada(models.Model):
