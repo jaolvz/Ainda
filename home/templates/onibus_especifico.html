@@ -15,39 +15,44 @@
     </header>
     <main>
         <section class="cabecalho_linha">
-
           <div>  <h1 > Linha {{linha.rota_numero}} </h1>  <img src="{% static 'onibus.png' %}" alt="">
            {% if condicao == 1 %}
           <img class='logo_brt' src="{% static 'logo_brt.png' %}">
            {% elif condicao == 2 %} 
            <img src="{% static 'frescao.png' %}">
             {% endif %}</div> 
-            <p>{{linha.rota_nome}}</p>
+            <p>{{linha.rota_nome}} {% if circular == 1%} (Circular) {%endif%}
+</p>
             <h3>Frequência: {{media_tempo}} minutos. </h3>
         </section>
+
+            <h1 id="rota_h1" > Rota de {{linha.rota_numero}} em diração para {{ultimaparada.referencia_parada}}</h1>
         
-        <div class="rota_mapa" >
-        <section class="descricao_linha">
-            <p>
-                A linha de ônibus {{linha.rota_numero}} possui {{parada_info.total_paradas}} pontos partindo de {{parada_info.primeira_parada}} e terminando em {{parada_info.ultima_parada}}
-            </p>
-
-               <div class="paradas">
-                <h3 class="titulo_paradas">Sentido: {{parada_info.ultima_parada}}</h3>
-                {%for parada in paradas_nome%}
-                  <div class="parada">
-                    {{parada}} 
-                  </div>
-                {%endfor%}
-               </div> 
-        </section>
-
-        <section class="mapa">
+<section class="rota">
+      
+        <div class="paradas">
             
-                <h1>Rota do {{linha.rota_numero}} sentido {{parada_info.ultima_parada}}</h1>
-            <div id="map">{{ map_html|safe }}</div>
-        </section>
+            <ul class="paradas_ul">
+                {%for parada in paradas%}
+                <li class="parada">
+                    <h1>{{parada.referencia_parada}}</h1>
+                    {%if parada.integracao_trem == 1%}
+                    <img class="logo_integracao" src="{% static 'logo_supervia.png' %}" alt=""> 
+                    {%endif%}
+                    {%if parada.integracao_metro == 1%}
+                    <img class="logo_integracao" src="{% static 'logo_metro.png' %}" alt=""> 
+                    {%endif%}
+                </li>
+                {%endfor%}
+            </ul>
+        </div>
 
-    </div>
+           <div class="mapa">
+                
+            <div id="map">{{ html_map|safe }}</div>
+            </div>
+</section>
+
+
     </main>
 </html>

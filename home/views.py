@@ -70,62 +70,35 @@ def onibus_especifico(request,rota_numero): #condicao sppo =0, brt=1, frescao= 2
          tempo_de_espera_media = media/60
       
       
-   
-      #pegando a primeira e ultima parada.
+      paradas_rota = paradas_onibus(viagens_id)
+      cordenadas_das_paradas =[]
+      for parada in paradas_rota:
+         cordenadas_das_paradas.append([parada.parada_latitude, parada.parada_longitude])
       
-      primeira_parada_id = HorarioParada.objects.get(viagem_id=viagens_id[0], numero_parada= 0).parada
-      numero_ultimaparada = HorarioParada.objects.filter(viagem_id=viagens_id[0]).aggregate(Max('numero_parada'))['numero_parada__max']
-      ultima_parada_id = HorarioParada.objects.get(viagem_id=viagens_id[0], numero_parada= numero_ultimaparada).parada
-      nome_primeira_parada = Parada.objects.get(parada_id=primeira_parada_id).referencia_parada
-      nome_ultima_parada = Parada.objects.get(parada_id=ultima_parada_id).referencia_parada
-
-      parada_info= { 
-         'primeira_parada':nome_primeira_parada,
-          'ultima_parada': nome_ultima_parada,
-          'total_paradas': str(numero_ultimaparada)}
       
-      #pegar paradas no sentido 0
-      id_viagem_destino0  = Viagem.objects.filter(viagem_id__in=viagens_id,destino_id=0).first().viagem_id
-      paradas = HorarioParada.objects.filter(viagem_id=id_viagem_destino0)
-      paradas_nome =[]
-      cordenadas_das_paradas=[]
-
-      for i in paradas:
-         nome_parada = Parada.objects.filter(parada_id=i.parada).first().referencia_parada   
-         paradas_nome.append(nome_parada)
-         longitude = Parada.objects.filter(parada_id=i.parada).first().parada_longitude
-         latitude = Parada.objects.filter(parada_id=i.parada).first().parada_latitude
-         cordenadas_da_parada = (latitude,longitude)
-         cordenadas_das_paradas.append(cordenadas_da_parada)
-
-      origem =cordenadas_das_paradas[0]  # Exemplo de coordenadas da origem
-      destino = cordenadas_das_paradas[-1] # Exemplo de coordenadas do destino
-     
-      mapa = folium.Map(location=origem, zoom_start=15)
+      # Criando o mapa centrado nas coordenadas fornecidas
+      mapa = folium.Map(location=cordenadas_das_paradas[0], zoom_start=13,)
+      folium.PolyLine(locations=cordenadas_das_paradas).add_to(mapa)
+      folium.Marker(location=cordenadas_das_paradas[0], icon=folium.Icon(color='green'),popup='Inicio' ).add_to(mapa)
+      folium.Marker(location=cordenadas_das_paradas[-1], icon=folium.Icon(color='red'), popup='Fim' ).add_to(mapa)
+      for cordenadas in cordenadas_das_paradas:
+         if cordenadas != cordenadas_das_paradas[0] and cordenadas!= cordenadas_das_paradas[-1]:
+            folium.Marker(location=cordenadas, color='blue' ).add_to(mapa)
       
-     
-      for ponto in cordenadas_das_paradas:
-         latitude,longitude =ponto  
-         folium.Marker(location=[latitude, longitude]).add_to(mapa)
-         
-      folium.Marker(location=cordenadas_das_paradas[0], popup='Localização Inicial', tooltip='Localização Inicial').add_to(mapa)
-      folium.Marker(location=cordenadas_das_paradas[-1], popup='Localização Final', tooltip='Localização Final').add_to(mapa)
-      coordenadas_linha = [(latitude, longitude) for latitude, longitude in cordenadas_das_paradas]
-
-      folium.PolyLine(locations=coordenadas_linha, color='blue').add_to(mapa)
-
-      map_html = mapa._repr_html_()   
-
-
-
-
+      map = mapa._repr_html_()
 
       #verificando se é SPPO, BRT ou FRESCÃO
       condicao = verificar_linha(linha.rota_numero)
+      if viagens_com_horario[0]['destino_letreiro']=="Circular" :
+         circular=1
+      else:
+         circular=0
+      
 
-      contexto = {'viagens': viagens_com_horario, 'linha':linha,'map_html': map_html,'media_tempo': round(tempo_de_espera_media), 'condicao': condicao , 'parada_info':parada_info,'paradas':paradas,'paradas_nome':paradas_nome }
+      contexto = {'viagens': viagens_com_horario, 'html_map':map,'linha':linha,'circular':circular,'media_tempo': round(tempo_de_espera_media),'ultimaparada':paradas_rota[-1], 'condicao': condicao ,'paradas': paradas_rota}
    
       return render(request, 'onibus_especifico.html',contexto)
+
 
 def transporte_onibus (request):
 
@@ -140,6 +113,25 @@ def transporte (request):
 
 def homepage(request):
    return render(request, 'homepage.html')
+
+
+def paradas_onibus(viagens_id):
+   
+      #pegar paradas no sentido 0
+      id_viagem_destino0  = Viagem.objects.filter(viagem_id__in=viagens_id,destino_id=0).first().viagem_id
+      paradas = HorarioParada.objects.filter(viagem_id=id_viagem_destino0)
+      paradas_viagem =[]
+      
+      for i in paradas:
+         paradas_viagem.append(Parada.objects.filter(parada_id=i.parada).first())
+
+      
+      for i in paradas_viagem:
+         if i.integracao_trem is True:
+            print(i.referencia_parada)
+            print(i.parada_longitude)
+
+      return paradas_viagem
 
 def verificar_linha (linha):
    linhas_brt , linhas_frescao = listas_brt_frescao()
